@@ -80,6 +80,7 @@ GameObject:
   - component: {fileID: 3769522373335061138}
   - component: {fileID: 7482548265058342617}
   - component: {fileID: 3874073176779477676}
+  - component: {fileID: 9013605143570236239}
   m_Layer: 0
   m_Name: PerMC
   m_TagString: Player
@@ -155,7 +156,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 112
+  m_Constraints: 116
   m_CollisionDetection: 1
 --- !u!136 &5517135671671576999
 CapsuleCollider:
@@ -244,8 +245,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damageAfterTime: 0.2
+  attackCooldown: 1
   damage: 3
   attackArea: {fileID: 8565216410214759903}
+--- !u!114 &9013605143570236239
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 168789827550995279}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4c89ba4ea56546e4ca58f768f4d61054, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealth: 10
+  playerAnim: {fileID: 0}
 --- !u!1 &903502645328878680
 GameObject:
   m_ObjectHideFlags: 0

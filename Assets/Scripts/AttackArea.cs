@@ -6,21 +6,53 @@ public class AttackArea : MonoBehaviour
 {
     public List<IDamageable> damageablesInRange { get;  } = new();
 
-    public void OnTriggerEnter(Collider other)
+    private readonly List<IDamageable> toAdd = new();
+    private readonly List<IDamageable> toRemove = new();
+
+    private void Update()
     {
-        var damageable = other.GetComponent<IDamageable>();
-        if (damageable != null )
+        if (toAdd.Count > 0)
         {
-            damageablesInRange.Add( damageable );
+            foreach (IDamageable damageable in toAdd)
+            {
+                if (!damageablesInRange.Contains(damageable))
+                {
+                    damageablesInRange.Add(damageable);
+                    Debug.Log($"Added {damageable} to damageablesInRange.");
+                }
+            }
+            toAdd.Clear();
+        }
+
+        if (toRemove.Count > 0)
+        {
+            foreach (IDamageable damageable in toRemove)
+            {
+                if (damageablesInRange.Contains(damageable))
+                {
+                    damageablesInRange.Remove(damageable);
+                    Debug.Log($"Removed {damageable} from damageablesInRange.");
+                }
+            }
+            toRemove.Clear();
         }
     }
 
-    public void OnTriggerExit(Collider other)
+    private void OnTriggerEnter(Collider other)
     {
         var damageable = other.GetComponent<IDamageable>();
-        if( damageable != null && damageablesInRange.Contains(damageable))
+        if (damageable != null && !toAdd.Contains(damageable) && !damageablesInRange.Contains(damageable))
         {
-            damageablesInRange.Remove( damageable );
+            toAdd.Add(damageable);
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        var damageable = other.GetComponent<IDamageable>();
+        if (damageable != null && !toRemove.Contains(damageable))
+        {
+            toRemove.Add(damageable);
         }
     }
 }

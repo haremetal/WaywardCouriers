@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -7,11 +8,13 @@ public class PlayerAttack : MonoBehaviour
     private Animator anim;
     private bool isAttacking;
 
-    [SerializeField] private float damageAfterTime;
-
-    [SerializeField] private int damage;
+    [SerializeField] private float damageAfterTime = 0.2f;
+    [SerializeField] private float attackCooldown = 1f;
+    [SerializeField] private int damage = 3;
 
     [SerializeField] private AttackArea attackArea;
+
+
     
     private void Awake()
     {
@@ -31,13 +34,18 @@ public class PlayerAttack : MonoBehaviour
         isAttacking = true;
         yield return new WaitForSeconds(damageAfterTime);
 
-        foreach (var attackAreaDamageable in attackArea.damageablesInRange)
+        List<IDamageable> targets = new List<IDamageable>(attackArea.damageablesInRange);
+
+        foreach (IDamageable target in targets)
         {
-            yield return new WaitForSeconds(damageAfterTime);
-            attackAreaDamageable.Damage(damage);
+            if (target != null)
+            {
+                target.Damage(damage);
+                Debug.Log($"Hit {target} for {damage} damage!");
+            }
         }
 
-        yield return new WaitForSeconds(damageAfterTime);
+        yield return new WaitForSeconds(attackCooldown);
         isAttacking = false;
 
     }
